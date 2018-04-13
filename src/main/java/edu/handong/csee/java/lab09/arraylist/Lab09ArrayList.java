@@ -1,7 +1,5 @@
 package edu.handong.csee.java.lab09.arraylist;
-
 import java.util.ArrayList;
-import java.util.HashMap; // delete later.
 import java.util.Scanner;
 /**
  * This class is a sales report using ArrayList.
@@ -15,18 +13,29 @@ public class Lab09ArrayList {
 	private double averageSales;
 	private int numOfSalesman;
 
+	/*public Lab09ArrayList() {
+		this.highestSales = 0.0;
+		this.averageSales = 0.0;
+		this.numOfSalesman = 0;
+	}
+
+	Lab09ArrayList m = new Lab09ArrayList(); */
+
 	private ArrayList<String> associatesArray = new ArrayList<String>(); // name
 	private ArrayList<Double> salesArray = new ArrayList<Double>(); // sales
 	// If I used array, like previous Lab09, the format is 'double[] salesArray = new double[numOfSalesman];
-	
+
 	public static void main(String[] args) {
+
 		Lab09ArrayList myList = new Lab09ArrayList();
-		
+
 		myList.getData();
 		myList.computeAverage();
+		myList.computeHighestSales();
 		myList.printResults();
-		
+
 	}
+
 	Scanner myKeyboard = new Scanner(System.in);
 
 	public void getData() {
@@ -42,8 +51,8 @@ public class Lab09ArrayList {
 
 			System.out.print("Name ? : ");
 			String name = myKeyboard.nextLine(); // String name
-			associatesArray.add(i,name); // adding String name to ArrayList
-			
+			associatesArray.add(i,name); // adding String name to ArrayList ( 본문에서는 add(name)과 같이 index는 적지 않았음 )
+
 
 			System.out.print("Sales? : ");
 			double sales = myKeyboard.nextDouble(); // Double sales
@@ -74,13 +83,18 @@ public class Lab09ArrayList {
 
 	public void computeHighestSales() {
 
-		int listSize = salesArray.size();
+		int listSize = salesArray.size(); // same as numOfSalesman
+
 		double highest = salesArray.get(0); // 초기값 젤 큰건 array의 첫번째 인자
+		//System.out.println(highest + "-------------");
+
 		double temp = 0.0;
 
-		for(int i = 0; i<listSize-1; i++) {
-			if(highest < salesArray.get(i+1)) {
-				highest = salesArray.get(i+1);
+		for(int i = 1; i<listSize; i++) {
+
+			temp = salesArray.get(i);
+			if(highest < temp) {
+				highest = temp;
 			}
 		}
 		setHighestSales(highest);
@@ -89,8 +103,29 @@ public class Lab09ArrayList {
 
 	public void printResults() {
 
-		System.out.println("Highest sales is $" + getHighestSales() +".");
-		System.out.println("Average sales is : "+ getAverageSales() + ".");
+
+		System.out.println("Highest sales is $" + getHighestSales());
+		System.out.println("Average sales is : "+ getAverageSales());
+		System.out.println("The following has the highest sales : ");
+		for(int i = 0; i<numOfSalesman; i++) {
+			double difference = 0.0;
+
+			System.out.println("Name : " + associatesArray.get(i));
+			System.out.println("Sales : " + salesArray.get(i));
+			if (salesArray.get(i) < getAverageSales()) {
+				difference = (getAverageSales() - salesArray.get(i));
+				System.out.println("$"+ difference +" below the average.");
+			}
+			else if (salesArray.get(i) == getAverageSales()) {
+				System.out.println("Earned just as much as average.");
+			}
+
+			else {
+				difference = (salesArray.get(i)-getAverageSales());
+				System.out.println("$"+ difference +" above the average.");
+			}
+
+		}
 
 	}
 
